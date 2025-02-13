@@ -7,13 +7,16 @@ const authorizer = (req, res, next) => {
     if(!token) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-
+    
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        req.user = payload;
+    next();
+
+
     }
     catch(error) {
         return res.status(401).json({ message: "Unauthorized" });
     }
-    next();
 };
 export default authorizer;
